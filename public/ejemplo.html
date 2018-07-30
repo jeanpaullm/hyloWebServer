@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Hylo </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+
+      $(function() {
+        $("#radio_1").click(function() {
+          $("#contenedorHijo1").show();
+          $("#contenedorHijo2").hide();
+        });
+
+        $("#radio_2").click(function() {
+          $("#contenedorHijo1").hide();
+          $("#contenedorHijo2").show();
+        });
+
+        //attr set y get atributos
+
+        $("#boton_1").click(function() {
+          $.ajax({url:"https://fcc-weather-api.glitch.me/api/current?lat=9.937542&lon=-84.061180",
+                    //jsonp: true,
+                    dataType : 'json',
+                    success: function(result) {
+                      console.log(result);
+                      var json_obj = $.parseJSON(response);
+
+                      var temperatura = json_obj[5].Languaje + " " + json_obj[5].ID;
+
+                      console.log(temperatura);
+
+                      $('<h1/>').text(json_obj.title).appendTo('#contenedorHijo1');
+                      $('<div class="content"/>').html(json_obj.html).appendTo('body');
+
+                      $("#contenedorHijo1").append(temperatura);
+                    }
+                  });
+        });
+
+      });
+
+    </script>
+
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      body {
+        width: 50%;
+        max-width: 800px;
+        min-width: 480px;
+        margin: 0 auto;
+      }
+      .lastResult {
+        color: white;
+        padding: 3px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <h1> Tarea de Imagine </h1>
+
+    <div class="estructura">
+
+      <h2> Selection </h2>
+
+      <form>
+        <input type="radio" name="divSelector" id="radio_1"> Radio1 <br>
+        <input type="radio" name="divSelector" id="radio_2"> Radio2
+      </form>
+
+      <div id="contenedorHijo1">
+        <h3> Usuario </h3>
+        <form>
+          Nombre
+          <input type="text" id="nombre" name="nombre"> <br>
+          Email
+          <input type="email" id="email" name="email"> <br>
+          Comentario
+          <textarea name="comentario">  </textarea> <br>
+          <input type="submit" value="Boton" id="boton_1" name=boton>
+        </form>
+      </div>
+
+      <div id="contenedorHijo2">
+        <h3> div hijo </h3>
+
+        <form action="./" method="post">
+          Texto1
+          <input type="text" id="texto1" name="texto_1">
+          Texto2
+          <input type="text" id="texto2" name="texto_2">
+          Texto3
+          <input type="text" id="texto3" name="texto_3">
+          Texto4
+          <input type="text" id="texto4" name="texto_4"> 
+          <input type="submit" id="boton2" name="boton_2">
+        </form>
+      </div>
+    </div>
+
+  </body>
+
+</html>
