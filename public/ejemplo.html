@@ -20,7 +20,7 @@
 
         //attr set y get atributos
 
-        $("#boton_1").click(function() {
+        $("#boton1").click(function() {
           $.ajax({url:"https://fcc-weather-api.glitch.me/api/current?lat=9.937542&lon=-84.061180",
                     //jsonp: true,
                     dataType : 'json',
@@ -38,6 +38,17 @@
                       $("#contenedorHijo1").append(temperatura);
                     }
                   });
+        });
+
+        $("#boton2").click(function(e) {
+          e.preventDefault();
+          if($("#texto1").val().length == 0 || $("#texto2").val().length == 0 ||
+              $("#texto3").val().length == 0 || $("#texto4").val().length == 0) {
+                alert("todos los campos de texto deben estar llenos");
+          }
+          else {
+            $("#formulario2").submit();
+          }
         });
 
       });
@@ -70,7 +81,7 @@
       <h2> Selection </h2>
 
       <form>
-        <input type="radio" name="divSelector" id="radio_1"> Radio1 <br>
+        <input type="radio" name="divSelector" id="radio_1" checked> Radio1
         <input type="radio" name="divSelector" id="radio_2"> Radio2
       </form>
 
@@ -78,19 +89,19 @@
         <h3> Usuario </h3>
         <form>
           Nombre
-          <input type="text" id="nombre" name="nombre"> <br>
+          <input type="text" id="nombre" name="nombre">
           Email
-          <input type="email" id="email" name="email"> <br>
+          <input type="email" id="email" name="email">
           Comentario
-          <textarea name="comentario">  </textarea> <br>
-          <input type="submit" value="Boton" id="boton_1" name=boton>
+          <textarea name="comentario">  </textarea>
+          <input type="submit" value="Boton" id="boton1" name=boton_2>
         </form>
       </div>
 
-      <div id="contenedorHijo2">
+      <div id="contenedorHijo2" hidden>
         <h3> div hijo </h3>
 
-        <form action="./" method="post">
+        <form id="formulario2" action="/" method="post">
           Texto1
           <input type="text" id="texto1" name="texto_1">
           Texto2
@@ -98,7 +109,7 @@
           Texto3
           <input type="text" id="texto3" name="texto_3">
           Texto4
-          <input type="text" id="texto4" name="texto_4"> 
+          <input type="text" id="texto4" name="texto_4">
           <input type="submit" id="boton2" name="boton_2">
         </form>
       </div>
