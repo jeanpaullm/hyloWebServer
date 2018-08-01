@@ -20,24 +20,12 @@
 
         //attr set y get atributos
 
-        $("#boton1").click(function() {
-          $.ajax({url:"https://fcc-weather-api.glitch.me/api/current?lat=9.937542&lon=-84.061180",
-                    //jsonp: true,
-                    dataType : 'json',
-                    success: function(result) {
-                      console.log(result);
-                      var json_obj = $.parseJSON(response);
+        $("#boton1").click(function(e) {
+          e.preventDefault();
 
-                      var temperatura = json_obj[5].Languaje + " " + json_obj[5].ID;
-
-                      console.log(temperatura);
-
-                      $('<h1/>').text(json_obj.title).appendTo('#contenedorHijo1');
-                      $('<div class="content"/>').html(json_obj.html).appendTo('body');
-
-                      $("#contenedorHijo1").append(temperatura);
-                    }
-                  });
+          $.get( "https://fcc-weather-api.glitch.me/api/current?lat=9.937542&lon=-84.061180", function( data ) {
+              $("#temperatura").text("Temperatura = " + data.main.temp);
+          });
         });
 
         $("#boton2").click(function(e) {
@@ -50,7 +38,6 @@
             $("#formulario2").submit();
           }
         });
-
       });
 
     </script>
@@ -86,7 +73,7 @@
       </form>
 
       <div id="contenedorHijo1">
-        <h3> Usuario </h3>
+        <h3 id="subtitulo"> Usuario </h3>
         <form>
           Nombre
           <input type="text" id="nombre" name="nombre">
@@ -94,12 +81,13 @@
           <input type="email" id="email" name="email">
           Comentario
           <textarea name="comentario">  </textarea>
-          <input type="submit" value="Boton" id="boton1" name=boton_2>
+          <input type="submit" value="Temperatura" id="boton1" name=boton_2>
         </form>
+        <h4 id="temperatura"> </h4>
       </div>
 
       <div id="contenedorHijo2" hidden>
-        <h3> div hijo </h3>
+        <h3 > div hijo </h3>
 
         <form id="formulario2" action="/" method="post">
           Texto1

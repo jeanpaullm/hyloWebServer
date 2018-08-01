@@ -22,9 +22,9 @@ app.get('/public',function(req,res) {
 app.post('/',function(req,res) {
   res.send("informacion publicada... \n" +
            "texto 1: " + req.body.texto_1 + " " +
-           "texto 2: " + req.body.texto_2 + " " +
-           "texto 3: " + req.body.texto_3 + " " +
-           "texto 4: " + req.body.texto_4);
+           "texto 2: " + req.body.texto_2.slice(4,12) + " " +
+           "texto 3: " + req.body.texto_3.toUpperCase() + " " +
+           "texto 4: " + req.body.texto_4.charAt(3));
 });
 
 app.listen(8080);
