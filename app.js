@@ -27,4 +27,5 @@ app.post('/',function(req,res) {
            "texto 4: " + req.body.texto_4.charAt(3));
 });
 
-app.listen(8080);
+const PORT = Number(process.env.PORT || 8080);
+app.listen(PORT);
