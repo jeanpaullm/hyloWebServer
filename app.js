@@ -14,18 +14,17 @@ app.get('/',function(req,res) {
 });
 
 app.get('/public',function(req,res) {
-  //res.writeHead(200,{"Content-Type":"application/json"});
-  //res.sendFile(path.join(__dirname +  '/ejemplo.html'));
   res.render("public/ejemplo");
 });
 
-app.post('/',function(req,res) {
+app.post('/public',function(req,res) {
+  var data = req.body;
   res.send("informacion publicada... \n" +
-           "texto 1: " + req.body.texto_1 + " " +
-           "texto 2: " + req.body.texto_2.slice(4,12) + " " +
-           "texto 3: " + req.body.texto_3.toUpperCase() + " " +
-           "texto 4: " + req.body.texto_4.charAt(3));
-});
+           "texto 1: " + data.texto1 + " " +
+           "texto 2: " + data.texto2.slice(4,12) + " " +
+           "texto 3: " + data.texto3.toUpperCase() + " " +
+           "texto 4: " + data.texto4.charAt(3));
+  });
 
 const PORT = Number(process.env.PORT || 8080);
 app.listen(PORT);

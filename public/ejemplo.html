@@ -24,6 +24,7 @@
           e.preventDefault();
 
           $.get( "https://fcc-weather-api.glitch.me/api/current?lat=9.937542&lon=-84.061180", function( data ) {
+            console.log(data);
               $("#temperatura").text("Temperatura = " + data.main.temp);
           });
         });
@@ -35,7 +36,14 @@
                 alert("todos los campos de texto deben estar llenos");
           }
           else {
-            $("#formulario2").submit();
+            jsonObj = {};
+            jsonObj["texto1"] = $("#texto1").val();
+            jsonObj["texto2"] = $("#texto2").val();
+            jsonObj["texto3"] = $("#texto3").val();
+            jsonObj["texto4"] = $("#texto4").val();
+            $.post( "./", jsonObj , function( data ) {
+              $("#subtitle").text( data );
+            });
           }
         });
       });
@@ -87,18 +95,18 @@
       </div>
 
       <div id="contenedorHijo2" hidden>
-        <h3 > div hijo </h3>
+        <h3 id="subtitle"> div hijo </h3>
 
         <form id="formulario2" action="/" method="post">
           Texto1
-          <input type="text" id="texto1" name="texto_1">
+          <input type="text" id="texto1">
           Texto2
-          <input type="text" id="texto2" name="texto_2">
+          <input type="text" id="texto2">
           Texto3
-          <input type="text" id="texto3" name="texto_3">
+          <input type="text" id="texto3">
           Texto4
-          <input type="text" id="texto4" name="texto_4">
-          <input type="submit" id="boton2" name="boton_2">
+          <input type="text" id="texto4">
+          <input type="submit" id="boton2">
         </form>
       </div>
     </div>
