@@ -18,11 +18,12 @@
           $("#contenedorHijo2").show();
         });
 
-        //attr set y get atributos
+        $("#grafico").click(function(){
+          window.location.href='./graph.html';
+        });
 
         $("#boton1").click(function(e) {
           e.preventDefault();
-
           $.get( "https://fcc-weather-api.glitch.me/api/current?lat=9.937542&lon=-84.061180", function( data ) {
             console.log(data);
               $("#temperatura").text("Temperatura = " + data.main.temp);
@@ -41,12 +42,14 @@
             jsonObj["texto2"] = $("#texto2").val();
             jsonObj["texto3"] = $("#texto3").val();
             jsonObj["texto4"] = $("#texto4").val();
-            $.post( "./", jsonObj , function( data ) {
+            $.post( "./ejemplo.html", jsonObj , function( data ) {
               $("#subtitle").text( data );
             });
           }
         });
       });
+
+      //<INPUT TYPE="BUTTON" VALUE="Home Page" ONCLICK="window.location.href='./graph.html'">
 
     </script>
 
@@ -73,6 +76,10 @@
 
     <div class="estructura">
 
+      <form>
+        <INPUT TYPE="BUTTON" VALUE="Home Page" id="grafico">
+      </form>
+
       <h2> Selection </h2>
 
       <form>
@@ -84,12 +91,12 @@
         <h3 id="subtitulo"> Usuario </h3>
         <form>
           Nombre
-          <input type="text" id="nombre" name="nombre">
+          <input type="text" id="nombre">
           Email
-          <input type="email" id="email" name="email">
+          <input type="email" id="email">
           Comentario
           <textarea name="comentario">  </textarea>
-          <input type="submit" value="Temperatura" id="boton1" name=boton_2>
+          <input type="submit" value="Temperatura" id="boton1">
         </form>
         <h4 id="temperatura"> </h4>
       </div>
