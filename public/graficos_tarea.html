@@ -92,8 +92,8 @@
 
       function drawDoubleYChart() {
         var contador=0;
-        var stringInicio = "5b677757cd410b000424a7bd";
-        var stringInicioLuz = "5b676dd2cd410b000423f5c4";
+        var stringInicio = "5b67776acd410b000424a815";
+        var stringInicioLuz = "5b676e21cd410b000423f862";
         var data = new google.visualization.DataTable();
         var luzArray=[];
         data.addColumn('date', 'Dia');
@@ -104,7 +104,7 @@
           $.each(datos, function(key, value) {
             if(parseFloat(value.luz) != undefined){
               var inicio = value._id;
-              if ((inicio.localeCompare(stringInicioLuz)==0 || contador>=1) && contador<=15){
+              if ((inicio.localeCompare(stringInicioLuz)==0 || contador>=1) && contador<=8){
                 luzArray.push(parseFloat(value.luz));
                 contador=contador+1;
                 console.log("guardando datos luminosidad");
@@ -115,7 +115,7 @@
           $.each(datos, function(key, value) {
             if(parseFloat(value.frutosMaduros) != undefined){
               var inicio = value._id;
-              if((inicio.localeCompare(stringInicio)==0 || contador>=1) && contador<=10){
+              if((inicio.localeCompare(stringInicio)==0 || contador>=1) && contador<=8){
                   //console.log('valores: ',parseFloat(value.Valor),'  ', parseFloat(value.Valor2))
                   data.addRows([[ new Date(value.date), luzArray[contador], parseFloat(value.frutosMaduros)]]);
                   //onsole.log(new Date(value.date));
