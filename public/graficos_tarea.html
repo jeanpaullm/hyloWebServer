@@ -1,0 +1,206 @@
+<html>
+  <head>
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      google.charts.load('current', {'packages': ['corechart']});//se puede llamar en el script o body tambien
+      google.charts.load('current', {'packages':['line', 'corechart']});
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.load('current', {'packages':['table']});
+      google.charts.load('current', {'packages':['scatter']});
+      //google.charts.load('current', {'packages':['line']});
+      //Draw Table
+      google.charts.setOnLoadCallback(drawChart);
+      
+      google.charts.setOnLoadCallback(drawTable);
+
+      google.charts.setOnLoadCallback(drawDoubleYChart);
+
+      google.charts.setOnLoadCallback(drawDots);
+
+      function drawChart() {
+        contador=0;
+        var stringInicio = "5b6786b0b4731400041716be";
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Tiempo (segundos)');
+        data.addColumn('number', 'Luminosidad');
+        $.get("https://hwthon18.herokuapp.com/hylo").done( function( datos ) 
+          {console.log("loading data");
+          $.each(datos, function(key, value) {
+            if(value.luz != undefined){
+              var inicio = value._id;
+              if ((inicio.localeCompare(stringInicio)==0 || contador>=1) && contador<=15){
+                data.addRows([[new Date(value.date), parseFloat(value.luz)]]);
+                contador=contador+1;
+                console.log("generando grafico luminosidad");
+              }
+            }            
+          });
+          var options = {
+                chart: {
+                  title: 'grafico luminosidad vs Tiempo',
+                  subtitle: ''
+                },
+                width: 900,
+                height: 500
+          }; 
+          setTimeout(function() {
+        // Instantiate and draw our chart, passing in some options.
+            var chart = new google.charts.Line(document.getElementById('linechart_material'));
+            chart.draw(data, google.charts.Line.convertOptions(options));
+            console.log("after draw");
+          }, 1000);
+        });
+      } 
+
+      function drawTable() {
+        var stringInicio = "5b6786b0b4731400041716be"; 
+        var data = new google.visualization.DataTable();
+        var contador=0;
+        data.addColumn('string', 'Id');
+        data.addColumn('date', 'Fecha')
+        data.addColumn('number', 'Humedad (%)');
+        data.addColumn('number', 'Temperatura (C)');
+        data.addColumn('number', 'Presion (kPa)');
+        data.addColumn('number', 'Luz (luxes)');
+        data.addColumn('number', 'Ultravioleta (mW/m^2)');
+        data.addColumn('number', 'Viento (m/s)');
+        data.addColumn('number', 'Precipitacion (mm)');
+        $.get("https://hwthon18.herokuapp.com/hylo").done( function( datos ) 
+          {console.log("loading data");
+          $.each(datos, function(key, value) {
+            //console.log(value);
+            var inicio = value._id;
+            if ((inicio.localeCompare(stringInicio)==0 || contador>=1) && contador<=15){
+              data.addRows([[ value._id, new Date(value.date), parseFloat(value.humedad), parseFloat(value.temperatura), parseFloat(value.presion), parseFloat(value.luz), parseFloat(value.ultravioleta), parseFloat(value.viento), parseFloat(value.precipitacion)]]);
+              console.log("generando tabla");
+              contador=contador+1;
+            }
+
+
+            setTimeout(function() {
+              var table = new google.visualization.Table(document.getElementById('table_div'));
+
+              table.draw(data, {showRowNumber: true, width: '100%', height: '60%'});  
+            }, 500);             
+          });
+        });
+      }
+
+      function drawDoubleYChart() {
+        var contador=0;
+        var stringInicio = "5b677757cd410b000424a7bd";
+        var stringInicioLuz = "5b676dd2cd410b000423f5c4";
+        var data = new google.visualization.DataTable();
+        var luzArray=[];
+        data.addColumn('date', 'Dia');
+        data.addColumn('number', "Luminosidad");
+        data.addColumn('number', "Pithayas Rojas");
+        $.get("https://hwthon18.herokuapp.com/hylo").done( function( datos ) 
+          {console.log("loading data");
+          $.each(datos, function(key, value) {
+            if(parseFloat(value.luz) != undefined){
+              var inicio = value._id;
+              if ((inicio.localeCompare(stringInicioLuz)==0 || contador>=1) && contador<=15){
+                luzArray.push(parseFloat(value.luz));
+                contador=contador+1;
+                console.log("guardando datos luminosidad");
+              }
+            }            
+          });
+          contador=0;
+          $.each(datos, function(key, value) {
+            if(parseFloat(value.frutosMaduros) != undefined){
+              var inicio = value._id;
+              if((inicio.localeCompare(stringInicio)==0 || contador>=1) && contador<=10){
+                  //console.log('valores: ',parseFloat(value.Valor),'  ', parseFloat(value.Valor2))
+                  data.addRows([[ new Date(value.date), luzArray[contador], parseFloat(value.frutosMaduros)]]);
+                  //onsole.log(new Date(value.date));
+                  contador=contador+1;
+                  console.log("generando grafico luz vs rojas");
+              }  
+            }   
+          });
+          //console.log(data);
+
+          var classicOptions = {
+            title: 'Grafico Luminosidad y Pitahayas Rojas vs Tiempo',
+            width: 900,
+            height: 500,
+            // Gives each series an axis that matches the vAxes number below.
+            series: {
+              0: {targetAxisIndex: 0},
+              1: {targetAxisIndex: 1}
+            },
+            vAxes: {
+              // Adds titles to each axis.
+              0: {title: 'Luminosidad'},
+              1: {title: 'frutosMaduros'}
+            }
+          };
+
+          setTimeout(function() {
+            var chartDiv = document.getElementById('chart_div');
+            var classicChart = new google.visualization.LineChart(chartDiv);
+            classicChart.draw(data, classicOptions);
+            }, 1500);        
+          });
+      }
+
+      function drawDots () {
+        contadorFila=1;
+        contadorColumna=1;
+        var fecha;
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'lado X');
+        data.addColumn('number', 'lado Y');
+        $.get("https://hwthon18.herokuapp.com/hylo").done( function( datos ) 
+          {console.log("loading data");
+          $.each(datos, function(key, value) {
+            fecha = new Date(value.date); 
+            var nuevoHongos=new Boolean(value.hongos);
+            if (nuevoHongos!=undefined){
+              //console.log(value.hongos);
+              if (value._id  && contadorFila<=6){
+                if (nuevoHongos == false){
+                    data.addRows([[contadorFila, contadorColumna]]);
+                    //console.log(parseFloat(value._id));              
+                }
+                contadorColumna=contadorColumna+1;
+                if (contadorColumna >= 6){
+                  contadorColumna=1;
+                  contadorFila=contadorFila+1;
+                }
+              }
+            } 
+          });
+          var options = {
+            width: 800,
+            height: 500,
+            chart: {
+              title: 'Presencia de Hongos en una Hectárea',
+              subtitle: 'Fecha' + fecha
+            },
+            hAxis: {title: 'Este-Oeste'},
+            vAxis: {title: 'Norte-Sur'}
+          };  
+          setTimeout(function() {
+            var chart = new google.charts.Scatter(document.getElementById('scatterchart_material'));
+            chart.draw(data, google.charts.Scatter.convertOptions(options));
+            }, 1500);        
+        });
+      }
+
+    </script>
+  </head>
+  <body>
+    <!--Table and divs that hold the pie charts-->
+    <div id="table_div"></div>
+    <div id="linechart_material"></div>
+    <div id="chart_div"></div>
+    <div id="scatterchart_material"></div>
+  </body>
+</html>

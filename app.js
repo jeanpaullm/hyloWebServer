@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/',function(req,res) {
-  res.redirect('/public/ejemplo.html');
+  res.redirect('/public/graficos_tarea.html');
 });
 
 app.get('/public/ejemplo.html',function(req,res) {
